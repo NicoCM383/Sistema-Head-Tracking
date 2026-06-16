@@ -1,0 +1,50 @@
+# ============================================================
+# Control de Gimbal mediante Head Tracking
+# Archivos generados / no versionables
+# ============================================================
+
+# Salidas de compilacion
+/bin/
+/temp/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Oo]bj/
+[Bb]in/
+
+# Visual Studio - archivos generados
+.vs/
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+# Artefactos del compilador / enlazador
+*.obj
+*.exe
+*.dll
+*.lib.tmp
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.log
+*.tlog
+*.lastbuildstate
+*.recipe
+
+# Dear ImGui - layout de runtime
+imgui.ini
+
+# Arduino - salidas de build
+*.hex
+*.elf
+
+# Sistema operativo
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
