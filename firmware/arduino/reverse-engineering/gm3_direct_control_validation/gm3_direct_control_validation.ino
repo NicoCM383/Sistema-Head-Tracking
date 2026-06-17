@@ -11,16 +11,11 @@
 // [A5][5A][03][B3][B4][B5][B6][B7][CRC_H][CRC_L]
 //
 // ------------------------------------------------------------
-// NOTA SOBRE EL FACTOR DE ESCALA DE TILT (321.0f):
-// Este sketch es un artefacto historico de la etapa de ingenieria
-// inversa / validacion experimental. El factor 321.0f usado aqui
-// (ver tiltDegToRaw) corresponde a una estimacion temprana obtenida
-// durante esa etapa y se conserva intencionalmente sin modificar.
-// La implementacion final de control utiliza 2900.0f (TILT_UNITS_PER_DEG)
-// segun la Seccion 6, p.84 del documento de grado, en:
+// FACTOR DE ESCALA DE TILT:
+// 321.0f es el factor de calibracion de Tilt usado por este sketch
+// de validacion (ver tiltDegToRaw). El firmware final de runtime
+// utiliza el mismo factor de calibracion de Tilt, en:
 //   firmware/arduino/gm3_mavlink_receiver/gm3_mavlink_receiver.ino
-// El comportamiento de este sketch se preserva como referencia historica;
-// no debe tomarse como el valor de control definitivo.
 // ------------------------------------------------------------
 #include <Arduino.h>
 
@@ -70,8 +65,7 @@ int16_t tiltDegToRaw(float tilt_deg) {
   if (tilt_deg > 90.0f) tilt_deg = 90.0f;
   if (tilt_deg < -90.0f) tilt_deg = -90.0f;
 
-  // 321.0f: valor experimental historico de la etapa de validacion.
-  // El control final usa 2900.0f (Seccion 6, p.84). Ver nota en el encabezado.
+  // 321.0f: factor de calibracion de Tilt (mismo factor que el firmware final).
   return (int16_t)lroundf(tilt_deg * 321.0f);
 }
 

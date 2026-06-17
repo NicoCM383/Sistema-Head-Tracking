@@ -2,7 +2,7 @@
 
 This project was developed by Nicolás Corimayo. "Control de Gimbal mediante Head Tracking" is the
 project title as shown on the first page of the project document
-"Proyecto de Grado Control Gimbal -Head Tracking NC". The project-specific implementation belongs
+"Proyecto de Grado Control Gimbal - Head Tracking". The project-specific implementation belongs
 to the project author. This file documents the external libraries and SDKs used by the project.
 
 The purpose of this document is purely technical: to identify which third-party libraries and

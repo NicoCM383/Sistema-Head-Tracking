@@ -3,7 +3,7 @@
 **Autor:** Nicolás Corimayo
 
 *"Control de Gimbal mediante Head Tracking"* es el título original del proyecto, tal como figura
-en la primera página del documento de grado **"Proyecto de Grado Control Gimbal -Head Tracking NC"**.
+en la primera página del documento de grado **"Proyecto de Grado Control Gimbal - Head Tracking"**.
 
 La fundamentación técnica de la implementación (arquitectura, firmware, reconstrucción del
 protocolo y desarrollo del proyecto) está alineada con la **Sección 6 — "Desarrollo del proyecto"**
@@ -169,19 +169,22 @@ El cableado serial y la secuencia de ejecución se detallan en [docs/workflow.md
    genera las tramas GM3 y orienta el gimbal. La ventana de visualización muestra el cuaternión,
    los ángulos *yaw/pitch/roll* (crudos y filtrados) y el paquete MAVLink generado.
 
-## Limitaciones y problemas conocidos
+## Estado del prototipo y mejoras futuras
 
-- **Factor de escala de Tilt:** el valor de control definitivo es **`2900.0f`** (Sección 6,
-  p.84), usado por el firmware final. El sketch de validación
-  `gm3_direct_control_validation.ino` conserva el valor experimental histórico `321.0f` como
-  artefacto de ingeniería inversa (ver [docs/protocolo-gm3.md](docs/protocolo-gm3.md)).
-- **Roll por LUT:** el eje Roll se codifica mediante una tabla de correspondencias discreta
-  (5 puntos identificados experimentalmente); valores intermedios se aproximan al vecino más
-  cercano.
-- **Comunicación cableada:** la transmisión PC ↔ Arduino ↔ Gimbal es serial cableada; una
-  mejora futura es reemplazarla por telemetría inalámbrica.
-- **Prototipo experimental:** el sistema demuestra viabilidad técnica y no constituye una
-  solución final lista para aplicación industrial.
+- **Prototipo funcional:** el sistema actual es un prototipo funcional que demuestra la
+  viabilidad técnica de controlar el gimbal CADDX GM3 mediante head tracking basado en el visor.
+  El pipeline de software y firmware está implementado de extremo a extremo.
+- **Comunicación cableada → telemetría inalámbrica:** la cadena de comunicación actual es
+  cableada (PC → Arduino Mega → gimbal GM3). Una mejora futura es reemplazar este enlace cableado
+  por telemetría inalámbrica.
+- **Alcance académico/experimental:** el prototipo está concebido como una implementación
+  académica/experimental. Para una implementación fuera del entorno académico, podrían
+  incorporarse validaciones adicionales, encapsulado, pruebas de robustez y trabajo de
+  integración específico.
+
+Los detalles técnicos del factor de escala de Tilt (`321.0f`) y de la codificación de Roll
+mediante LUT forman parte de la implementación del protocolo GM3 y se documentan en
+[docs/protocolo-gm3.md](docs/protocolo-gm3.md).
 
 ## Dependencies and external components
 

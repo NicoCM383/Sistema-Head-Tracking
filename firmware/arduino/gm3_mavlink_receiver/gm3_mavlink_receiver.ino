@@ -21,7 +21,7 @@ constexpr uint32_t GIMBAL_BAUD = 115200;
 // ---------------------------
 // Calibración obtenida de tus logs
 // ---------------------------
-constexpr float TILT_UNITS_PER_DEG = 2900.0f;
+constexpr float TILT_UNITS_PER_DEG = 321.0f;
 constexpr float PAN_UNITS_PER_DEG  = 182.0f;
 // Si más adelante detectás offset distinto de cero, ajustalo aquí.
 constexpr int16_t TILT_ZERO_RAW = 0;
@@ -71,12 +71,14 @@ float clampFloat(float value, float minValue, float maxValue) {
 int16_t degreesToTiltRaw(float tiltDeg) {
   tiltDeg = clampFloat(tiltDeg, TILT_MIN_DEG, TILT_MAX_DEG);
   float raw = TILT_ZERO_RAW + tiltDeg * TILT_UNITS_PER_DEG;
-  return static_cast<int16_t>(raw);
+  raw = clampFloat(raw, -32768.0f, 32767.0f);
+  return static_cast<int16_t>(lroundf(raw));
 }
 int16_t degreesToPanRaw(float panDeg) {
   panDeg = clampFloat(panDeg, PAN_MIN_DEG, PAN_MAX_DEG);
   float raw = PAN_ZERO_RAW + panDeg * PAN_UNITS_PER_DEG;
-  return static_cast<int16_t>(raw);
+  raw = clampFloat(raw, -32768.0f, 32767.0f);
+  return static_cast<int16_t>(lroundf(raw));
 }
 // Selección por vecino más cercano dentro de la LUT.
 // Si luego completás más puntos intermedios, esta parte mejora automáticamente.

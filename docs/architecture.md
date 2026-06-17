@@ -1,7 +1,7 @@
 # Arquitectura del sistema
 
 > Referencia técnica alineada con la **Sección 6.4 "Diseño de la arquitectura del sistema"**
-> (y secciones 6.5–6.7) del documento *"Proyecto de Grado Control Gimbal -Head Tracking NC"*.
+> (y secciones 6.5–6.7) del documento *"Proyecto de Grado Control Gimbal - Head Tracking"*.
 > Autor del proyecto: **Nicolás Corimayo**.
 
 ## Cadena funcional

@@ -1,7 +1,7 @@
 # Protocolo propietario reconstruido — Gimbal Caddx GM3
 
 > Referencia técnica alineada con la **Sección 6.3 "Ingeniería Inversa"** del documento
-> *"Proyecto de Grado Control Gimbal -Head Tracking NC"* (páginas 78–89).
+> *"Proyecto de Grado Control Gimbal - Head Tracking"* (páginas 78–89).
 > Resume el subconjunto funcional del protocolo necesario para controlar la orientación del gimbal.
 > Autor del proyecto: **Nicolás Corimayo**.
 
@@ -58,22 +58,18 @@ El protocolo presenta **dos modos** dentro de la misma estructura:
 | +10      | 10 | 07 |
 | +30      | 50 | 15 |
 
-## Factores de escala empíricos (Sección 6.3, p.84)
+## Factores de escala
 
-- **Tilt** ≈ **2900** unidades por grado
-- **Pan**  ≈ **182** unidades por grado
+Codificación de los ejes lineales:
 
-> ✅ **Discrepancia resuelta (factor de Tilt):** el valor de control definitivo es
-> **`2900.0f`**, conforme a la **Sección 6, p.84** del documento de grado.
-> El programa final
-> [`gm3_mavlink_receiver.ino`](../firmware/arduino/gm3_mavlink_receiver/gm3_mavlink_receiver.ino)
-> usa `TILT_UNITS_PER_DEG = 2900.0f` y es la implementación de referencia.
-> El sketch de validación
-> [`gm3_direct_control_validation.ino`](../firmware/arduino/reverse-engineering/gm3_direct_control_validation/gm3_direct_control_validation.ino)
-> usa `tilt_deg * 321.0f`: se trata de un **valor histórico/experimental** de la etapa de
-> ingeniería inversa, conservado sin cambios como artefacto de referencia. **No** es el valor
-> de control final. Para una visión general del proyecto y su ejecución, ver el
-> [README](../README.md).
+- **Tilt** → entero con signo de 16 bits (*little-endian*), factor `TILT_UNITS_PER_DEG = 321.0f`.
+- **Pan**  → entero con signo de 16 bits (*little-endian*), factor `PAN_UNITS_PER_DEG = 182.0f`.
+
+El firmware final de runtime
+[`gm3_mavlink_receiver.ino`](../firmware/arduino/gm3_mavlink_receiver/gm3_mavlink_receiver.ino)
+aplica estos factores y **satura** los valores crudos de Tilt y Pan al rango de `int16_t`
+(`-32768` a `32767`) antes de empaquetarlos en los bytes de la trama. El eje Roll se codifica
+mediante `ROLL_LUT`. Para una visión general del proyecto, ver el [README](../README.md).
 
 ## Relación con el firmware final
 
@@ -87,7 +83,7 @@ Cada elemento del protocolo reconstruido se corresponde con el firmware de la si
 | Trama Tilt/Pan | `sendTiltPanFrame` |
 | Trama Roll | `sendRollFrame` |
 | CRC16-CCITT (b0..b7 → b8/b9) | `crc16_ccitt` |
-| Factor de escala de Tilt `2900.0f` | `TILT_UNITS_PER_DEG` |
+| Factor de escala de Tilt `321.0f` | `TILT_UNITS_PER_DEG` |
 | Factor de escala de Pan `182.0f` | `PAN_UNITS_PER_DEG` |
 | Tabla de correspondencias de Roll | `ROLL_LUT` |
 
@@ -110,9 +106,11 @@ Estas herramientas pertenecen a la etapa de análisis y validación, mientras qu
 [`gm3_mavlink_receiver.ino`](../firmware/arduino/gm3_mavlink_receiver/gm3_mavlink_receiver.ino)
 es el **firmware final de runtime**.
 
-> **Nota:** el sketch de validación puede contener valores experimentales históricos (por
-> ejemplo, el factor de Tilt `321.0f`). El **firmware final es la implementación autoritativa**
-> para el control en tiempo de ejecución (factor de Tilt `2900.0f`, Sección 6, p.84).
+> **Nota:** el sketch de validación
+> [`gm3_direct_control_validation.ino`](../firmware/arduino/reverse-engineering/gm3_direct_control_validation/gm3_direct_control_validation.ino)
+> y el firmware final
+> [`gm3_mavlink_receiver.ino`](../firmware/arduino/gm3_mavlink_receiver/gm3_mavlink_receiver.ino)
+> usan el mismo factor de calibración de Tilt (`321.0f`).
 
 ## Aclaración de alcance
 
